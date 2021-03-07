@@ -1,0 +1,163 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Video</title>
+		<link rel="stylesheet" href="styling.css" type="text/css"/>
+		
+	</head>
+	<body>
+		<div id="container">
+			<header>
+			<h1> Video Question </h1>
+			</header>
+			<div id="main_body">
+			<div class = "navigation">
+				<a href="About_me.html">About me</a>
+				<a href="Modules.html">Modules</a>
+				<a href="Projects.html">Projects</a>
+				<a class ="active" href="Video.html">Video</a>
+			</div>
+			<div id="left">
+			<p>If you want to record a video message/question about anything you seen then please do. Below you can hit the start recording button and it will ask for access to your microphone and webcam. Please accept this to start recording and hit the stop button after.</p>
+			<button type=button id="strtVid" onclick='getStream()' style="display:block; margin-right:100px">Start Recording</button>
+			<button type=button id="stpVid" onclick='stopRecorder()' style="display:block">Stop Recording and Download</button>
+			 <video autoplay id="vid1" style="height:400px; width: 400px;" poster="https://image.freepik.com/free-icon/video-camera-symbol_318-40225.png"></video>
+			<video id="vid2" muted="muted" style="float:right; display:block; height:400px; width: 400px"></video>
+			</div>
+			<div id="right">
+			<div id="image">
+					<img src="https://i.imgur.com/itYNQXE.png?4">
+			</div>
+			</div>
+			</div>
+					<script type ="text/javascript">
+				var img = document.getElementById('image');
+				
+				var images = ['https://i.imgur.com/3JnISF2.png?2','https://i.imgur.com/itYNQXE.png?4'];
+				
+				var i = 0;
+				
+				function change(){
+					if (i<images.length){
+					
+						i= i+1;
+						
+					}else{
+						i= 1;
+					}
+					
+					image.innerHTML = "<img src="+images[i-1]+">";
+				}
+				
+				
+				setInterval(change,2000);
+			
+			</script>
+			<script>
+			function getUserMedia(options, successCallback, failureCallback) {
+        var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+          navigator.mozGetUserMedia || navigator.msGetUserMedia;
+        if (api) {
+            return api.bind(navigator)(options, successCallback, failureCallback);
+        }
+        alert('User Media API not supported.');
+    }
+
+    var theStream;
+    var theRecorder;
+    var recordedChunks = [];
+
+    var mediaSource = new MediaSource();
+    var sourceBuffer;
+
+
+	function getStream() {
+
+        recordedChunks = [];
+
+        var vid2 = document.getElementById('vid2');
+   
+
+     
+
+
+        mediaSource.addEventListener('sourceopen', function (e) {
+            sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="opus,vp8"');
+        }, false);
+
+
+        var constraints = {
+            video: true, audio: true
+        };
+
+        getUserMedia(constraints, function (stream) {
+            var mediaControl = document.getElementById('vid1');
+            if (navigator.mozGetUserMedia) {
+                mediaControl.mozSrcObject = stream;
+            } else {
+                mediaControl.srcObject = stream;
+            }
+
+            theStream = stream;
+            try {
+                recorder = new MediaRecorder(stream);
+            } catch (e) {
+                console.error('Exception while creating MediaRecorder: ' + e);
+                return;
+            }
+            theRecorder = recorder;
+            console.log('MediaRecorder created');
+            recorder.ondataavailable = recorderOnDataAvailable;
+            recorder.start(100);
+        }, function (err) {
+            alert('Error: ' + err);
+        });
+    }
+	
+	
+	
+	
+
+function recorderOnDataAvailable(event) {
+        if (event.data.size == 0) return;
+        recordedChunks.push(event.data);
+
+        var reader = new FileReader();
+        reader.addEventListener("loadend", function () {
+            var arr = new Uint8Array(reader.result);
+            sourceBuffer.appendBuffer(arr);
+        });
+        reader.readAsArrayBuffer(event.data);
+    }
+
+function download(fileName) {
+console.log('Saving data');
+        theRecorder.stop();
+        theStream.getTracks()[0].stop();
+
+        var blob = new Blob(recordedChunks, { type: "video/webm" });
+        var url = (window.URL || window.webkitURL).createObjectURL(blob);
+        var a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        a.href = url;
+        a.download = fileName+".mp4";
+        a.click();
+
+        setTimeout(function () {
+            (window.URL || window.webkitURL).revokeObjectURL(url);
+        }, 100);
+}
+	
+	function stopRecorder() {
+	download("myVideo");
+}
+
+</script>
+			<footer>
+			<p>Website By Alexander Attwood-Palmer</p>
+			</footer>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Projects</title>
+		<link rel="stylesheet" href="styling.css" type="text/css"/>
+	</head>
+	<body>
+		<div id="container">
+			<header>
+			<h1> Projects </h1>
+			</header>
+			<div id="main_body">
+			<div class = "navigation">
+				<a href="About_me.html">About me</a>
+				<a href="Modules.html">Modules</a>
+				<a class ="active" href="Projects.html">Projects</a>
+				<a href="Video.html">Video</a>
+			</div>
+			<div id="left">
+			<h2>Computer systems project</h2>
+			<article id=article>For the coursework in this module we had to create a circuit using digital works that using logic gates we could use a number display to show the year and your student ID number. We had to colour it and also do calculations showing how we worked out what inputs we would need to make the circuit work.We did this by getting an equation which in turn could be used to decide what inputs to do.</article>
+			<button id=play onclick ="onClickPlay()">Play</button><button id=pause onclick="onClickPause">Pause</button><button id=stop onclick = "onClickStop">Stop</button>
+			<video  width="300" height="300"controls>
+				<source src="Recording1.mp4" type="video/mp4">
+			</video>
+			</div>
+			<div id="right">
+			<h2> Introduction to programming project </h2>
+			<article id =article2>In this project we had a scenario about train seat prices and bookings. We had to read a file of 4 seats and their prices with a fixed discount rate. When you run the program it asks if you want to specify a different discount rate or use the discount one. If the user wants to user a new discount rate then it calculates the new discounts. It also calculates and displays the total discounts and income with the new discounts.</article>
+			<button id=play2>Play</button><button id=pause2>Pause</button><button id=stop2>Stop</button>
+			
+			<video width="500" height="500"controls>
+				<source src="Recording2.mp4" type="video/mp4">
+			</video>
+			</div>
+			</div>
+			<script src="C:\Users\wolve\OneDrive\Documents\Web development\jquery-3.4.1.js"></script>
+			<script type = "text/javascript">
+			onload = function() {
+			if ('speechSynthesis' in window) with(speechSynthesis) {
+
+			var playEle = document.querySelector('#play');
+			var pauseEle = document.querySelector('#pause');
+			var stopEle = document.querySelector('#stop');
+			var flag = false;
+
+			playEle.addEventListener('click', onClickPlay); //adds the onclick events the the buttons.
+			pauseEle.addEventListener('click', onClickPause);
+			stopEle.addEventListener('click', onClickStop);
+
+			function onClickPlay() {
+				if (!flag) {
+                flag = true;
+                utterance = new SpeechSynthesisUtterance(document.querySelector('article').textContent);
+                utterance.voice = getVoices()[0];
+                utterance.onend = function() {
+                    flag = false;
+                    playEle.className = pauseEle.className = '';
+                    stopEle.className = 'stopped';
+                };
+                playEle.className = 'played';
+                stopEle.className = '';
+                speak(utterance);
+            }
+            if (paused) { 
+                playEle.className = 'played';
+                pauseEle.className = '';
+                resume();
+            }
+        }
+
+        function onClickPause() {
+            if (speaking && !paused) { 
+                pauseEle.className = 'paused';
+                playEle.className = '';
+                pause();
+            }
+        }
+
+        function onClickStop() {
+            if (speaking) { 
+                
+                stopEle.className = 'stopped';
+                playEle.className = pauseEle.className = '';
+                flag = false;
+                cancel();
+
+            }
+        }
+
+    }
+
+    else { 
+        msg = document.createElement('h5');
+        msg.textContent = "Detected no support for Speech Synthesis";
+        msg.style.textAlign = 'center';
+        msg.style.backgroundColor = 'red';
+        msg.style.color = 'white';
+        msg.style.marginTop = msg.style.marginBottom = 0;
+        document.body.insertBefore(msg, document.querySelector('div'));
+    }
+
+}
+			</script>
+			<script type = "text/javascript">
+			onload = function() {
+			if ('speechSynthesis' in window) with(speechSynthesis) {
+
+			var play2Ele = document.querySelector('#play2');
+			var pause2Ele = document.querySelector('#pause2');
+			var stop2Ele = document.querySelector('#stop2');
+			var flag2 = false;
+
+			play2Ele.addEventListener('click', onClickPlay2);
+			pause2Ele.addEventListener('click', onClickPause2);
+			stop2Ele.addEventListener('click', onClickStop2);
+
+			function onClickPlay2() {
+				if (!flag2) {
+                flag2 = true;
+                utterance2 = new SpeechSynthesisUtterance(document.querySelector('#article2').textContent);
+                utterance2.voice = getVoices()[0];
+                utterance2.onend = function() {
+                    flag2 = false;
+                    play2Ele.className = pause2Ele.className = '';
+                    stop2Ele.className = 'stopped';
+                };
+                play2Ele.className = 'played';
+                stop2Ele.className = '';
+                speak(utterance2);
+            }
+            if (paused) { 
+                play2Ele.className = 'played';
+                pause2Ele.className = '';
+                resume();
+            }
+        }
+
+        function onClickPause2() {
+            if (speaking && !paused) { 
+                pause2Ele.className = 'paused';
+                play2Ele.className = '';
+                pause();
+            }
+        }
+
+        function onClickStop2() {
+            if (speaking) { 
+                
+                stop2Ele.className = 'stopped';
+                play2Ele.className = pause2Ele.className = '';
+                flag2 = false;
+                cancel();
+
+            }
+        }
+
+    }
+
+    else { 
+        msg = document.createElement('h5');
+        msg.textContent = "Detected no support for Speech Synthesis";
+        msg.style.textAlign = 'center';
+        msg.style.backgroundColor = 'red';
+        msg.style.color = 'white';
+        msg.style.marginTop = msg.style.marginBottom = 0;
+        document.body.insertBefore(msg, document.querySelector('div'));
+    }
+
+}
+			</script>
+			<footer>
+			<p>Website By Alexander Attwood-Palmer</p>
+			</footer>
+		</div>
+	</body>
+</html>
